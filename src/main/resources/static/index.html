@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+<h2>Chat with Bot</h2>
+<input id="message" placeholder="Type a message..." />
+<button onclick="sendMessage()">Send</button>
+<div id="response"></div>
+
+<script>
+    function sendMessage() {
+        const message = document.getElementById("message").value;
+        fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message })
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("response").innerText = data.response || JSON.stringify(data);
+            })
+            .catch(err => {
+                document.getElementById("response").innerText = "Error: " + err.message;
+            });
+    }
+</script>
+</body>
+</html>
